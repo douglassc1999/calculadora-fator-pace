@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Atividade</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 300px;
+      width: 100%;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .resultado {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .resultado span {
+      font-weight: bold;
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Calculadora de Atividade</h1>
+    <label for="pace">Pace (min/km):</label>
+    <input type="number" id="pace" step="0.1" placeholder="Ex: 4.5" required>
+    
+    <label for="km">Kilometragem (km):</label>
+    <input type="number" id="km" step="0.1" placeholder="Ex: 4" required>
+    
+    <button onclick="calcular()">Calcular</button>
+    
+    <div class="resultado" id="resultado"></div>
+  </div>
+
+  <script>
+    function calcular() {
+      // Obter valores dos inputs
+      const pace = parseFloat(document.getElementById('pace').value);
+      const km = parseFloat(document.getElementById('km').value);
+
+      // Validar entradas
+      if (isNaN(pace)) {
+        alert("Por favor, insira um valor válido para o pace.");
+        return;
+      }
+      if (isNaN(km) || km <= 0) {
+        alert("Por favor, insira uma kilometragem válida.");
+        return;
+      }
+
+      // Calcular o fator
+      const fator = pace / km;
+
+      // Determinar se é caminhada ou corrida
+      let tipoAtividade;
+      if (fator > 2) {
+        tipoAtividade = "Caminhada";
+      } else {
+        tipoAtividade = "Corrida";
+      }
+
+      // Exibir o resultado
+      const resultadoDiv = document.getElementById('resultado');
+      resultadoDiv.innerHTML = `
+        Fator: <span>${fator.toFixed(2)}</span><br>
+        Tipo de atividade: <span>${tipoAtividade}</span>
+      `;
+    }
+  </script>
+</body>
+</html>
