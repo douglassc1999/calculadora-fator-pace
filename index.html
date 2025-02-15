@@ -73,10 +73,10 @@
 </head>
 <body>
   <div class="container">
-    <h1>Calculadora de Atividade</h1>
+    <h1>Calculadora de Cardio</h1>
     <label for="pace">Pace (min/km):</label>
-    <input type="time" id="pace" placeholder="Ex: 4:30" required>
-    
+    <input type="text" id="pace" placeholder="Ex: 04:30" maxlength="5" required>
+
     <label for="km">Kilometragem (km):</label>
     <input type="number" id="km" step="0.1" placeholder="Ex: 4" required>
     
@@ -86,6 +86,28 @@
   </div>
 
   <script>
+    // Tratamento da máscara do input
+    document.addEventListener("DOMContentLoaded", function () {
+      const paceInput = document.getElementById("pace");
+
+      paceInput.addEventListener("input", function (e) {
+        // Remove dígitos não numéricos
+        let value = this.value.replace(/\D/g, "");
+
+        // Adiciona um 0 de left-pad caso o primeiro valor não seja zero
+        if (value.length === 1 && value !== "0") {
+          value = "0" + value;
+        }
+
+        // Insere ":" após dois dígitos
+        if (value.length > 2) {
+          value = value.slice(0, 2) + ":" + value.slice(2, 4);
+        }
+
+        this.value = value;
+      });
+    });
+
    function calcular() {
     // Obter valores dos inputs
     const paceStr = document.getElementById('pace').value;
