@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TTY83BPD3Z"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
     gtag('config', 'G-TTY83BPD3Z');
@@ -78,19 +79,28 @@
       font-weight: bold;
       color: #007bff;
     }
+
+    .frase {
+      color: #666;
+      font-style: italic;
+      margin-top: 15px;
+      border-left: 3px solid #007bff;
+      padding-left: 10px;
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1>Calculadora de Cardio</h1>
     <label for="pace">Pace (min/km):</label>
     <input type="text" id="pace" placeholder="Ex: 04:30" maxlength="5" required>
 
-    <label for="km">Kilometragem (km):</label>
-    <input type="number" id="km" step="0.1" placeholder="Ex: 4" required>
-    
+    <label for="km">Distância (km):</label>
+    <input type="number" id="km" step="0.1" placeholder="Ex: 4" min="0.1" max="100" required>
+
     <button onclick="calcular()">Calcular</button>
-    
+
     <div class="resultado" id="resultado"></div>
   </div>
 
@@ -117,52 +127,89 @@
       });
     });
 
-   function calcular() {
-    // Obter valores dos inputs
-    const paceStr = document.getElementById('pace').value;
-    const km = parseFloat(document.getElementById('km').value);
 
-    // Validar e converter pace
-    let pace;
-    const parts = paceStr.split(':'); // Dividir o valor nos dois pontos
-    
-    // Verificar formato mm:ss
-    if (parts.length !== 2 || isNaN(parts[0]) || isNaN(parts[1])) {
-      alert("Formato de pace inválido. Use o formato mm:ss (ex: 5:30).");
-      return;
-    }
-    
-    const minutos = parseFloat(parts[0]);
-    const segundos = parseFloat(parts[1]);
-    
-    // Validar valores dos minutos e segundos
-    if (segundos >= 60 || minutos < 0 || segundos < 0) {
-      alert("Segundos devem estar entre 00 e 59, e minutos não podem ser negativos.");
-      return;
-    }
-    
-    // Converter para decimal (ex: 4:30 → 4 + 30/60 = 4.5)
-    pace = minutos + segundos / 60;
+    const frasesPace = [
+      "Seu pace está ótimo... pra fugir de uma tartaruga com bengala! 🐢",
+      "Se o pace fosse dinheiro, você ainda estaria juntando pro café! ☕",
+      "Tá treinando pra maratona ou pra prova de soneca? 😴",
+      "Esse pace é bom... se o objetivo for fazer amigos na pista! 👫",
+      "Você correu ou foi empurrado pelo vento? 🌪️",
+      "Se fosse corrida de sofá, você tava liderando! 🛋️",
+      "Até a Lesma Márcia está te dando passagem! 🐌",
+      "Tá correndo ou fazendo tour gastronômico pela pista? 🍩",
+      "Corredor ou enfeite de percurso? 🏃♂️🎁",
+      "Parece que tá correndo no modo 'economia de batimentos'! 💓",
+      "Se fosse zumbi em The Walking Dead, já teria sido abandonado pelo grupo! 🧟♂️",
+      "Acha que o Flash começou correndo rápido? Pois é... você não é o Flash! ⚡",
+      "Seu pace é igual promessa de ano novo: todo mundo sabe que não vai durar! 🎆",
+      "Se correr fosse profissão, você estaria desempregado e com dívida no Serasa! 💼🚫",
+      "Seu tênis de corrida está processando você por falsa propaganda! 👟⚖️",
+      "Corredor ou figurante de cena lenta de novela? 📺",
+      "Até o aplicativo tá com vergonha de postar seu pace no feed! 🙈",
+      "Parabéns! Você é o exemplo de que 'pelo menos tentou' tem limite! 🎗️",
+      "Se correr fosse investimento, você já teria falido o banco! 💸📉" 
+    ];
 
-    // Validar kilometragem
-    if (isNaN(km) || km <= 0) {
-      alert("Por favor, insira uma kilometragem válida.");
-      return;
+    function mostrarFraseAleatoria() {
+      const frase = frasesPace[Math.floor(Math.random() * frasesPace.length)];
+      document.getElementById("resultado").innerHTML += `<p class="frase">${frase}</p>`;
     }
 
-    // Calcular o fator
-    const fator = pace / km;
+    function calcular() {
+      // Obter valores dos inputs
+      const paceStr = document.getElementById('pace').value;
+      const km = parseFloat(document.getElementById('km').value);
 
-    // Determinar tipo de atividade
-    let tipoAtividade = fator > 2 ? "Caminhada" : "Corrida";
+      // Validar e converter pace
+      let pace;
+      const parts = paceStr.split(':'); // Dividir o valor nos dois pontos
 
-    // Exibir resultado
-    const resultadoDiv = document.getElementById('resultado');
-    resultadoDiv.innerHTML = `
+      // Verificar formato mm:ss
+      if (parts.length !== 2 || isNaN(parts[0]) || isNaN(parts[1])) {
+        alert("Formato de pace inválido. Use o formato mm:ss (ex: 5:30).");
+        return;
+      }
+
+      const minutos = parseFloat(parts[0]);
+      const segundos = parseFloat(parts[1]);
+
+      // Validar valores dos minutos e segundos
+      if (segundos >= 60 || minutos < 0 || segundos < 0) {
+        alert("Segundos devem estar entre 00 e 59, e minutos não podem ser negativos.");
+        return;
+      }
+
+      // Converter para decimal (ex: 4:30 → 4 + 30/60 = 4.5)
+      pace = minutos + segundos / 60;
+
+      // Validar kilometragem
+      if (isNaN(km) || km <= 0) {
+        alert("Por favor, insira uma kilometragem válida.");
+        return;
+      }
+
+      // Validação reforçada
+      if (km > 100) {
+        alert("A distância máxima é 100 km. Tá tentando virar um ultra-maratonista? 🏃♂️💨");
+        return;
+      }
+
+      // Calcular o fator
+      const fator = pace / km;
+
+      // Determinar tipo de atividade
+      let tipoAtividade = fator > 2 ? "Caminhada" : "Corrida";
+
+      // Exibir resultado
+      const resultadoDiv = document.getElementById('resultado');
+      resultadoDiv.innerHTML = `
       Fator: <span>${fator.toFixed(2)}</span><br>
       Tipo de atividade: <span>${tipoAtividade}</span>
     `;
-  }
+
+      mostrarFraseAleatoria();
+    }
   </script>
 </body>
+
 </html>
